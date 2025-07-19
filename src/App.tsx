@@ -10,6 +10,7 @@ import { Controls } from "./components/controls";
 
 import { useCalculator } from "./hooks/useCalculator";
 import { useLayoutSetting } from "./hooks/useLayoutSetting";
+import { useKeyboardNavigation } from "./hooks/useKeyboardNavigation";
 
 const customTheme = {
   ...webLightTheme,
@@ -20,6 +21,17 @@ function App() {
   const { layoutConfig, correctLayoutProps } = useLayoutSetting();
   const { handleButtonClick, displayValue, value, lastOperation } =
     useCalculator();
+
+  // Enable keyboard navigation
+  useKeyboardNavigation({
+    onButtonClick: (value) => {
+      // Simulate button click for keyboard input
+      const event = {
+        target: { dataset: { value } },
+      } as unknown as React.MouseEvent<HTMLButtonElement>;
+      handleButtonClick(event);
+    },
+  });
 
   return (
     <>
