@@ -1,5 +1,7 @@
 # 🧮 Advanced Calculator
 
+![Calculator UI screenshot](./public/calculator.png)
+
 A modern, accessible calculator built with React, TypeScript, and Fluent UI. Features comprehensive error handling, full keyboard accessibility, and robust testing.
 
 ## 🏗️ Architecture & Design Decisions
