@@ -62,12 +62,22 @@ describe("useKeyboardNavigation", () => {
       expect(mockOnButtonClick).toHaveBeenCalledWith("-");
     });
 
+    it("should handle subtraction operator without Shift", () => {
+      simulateKeyPress("-");
+      expect(mockOnButtonClick).toHaveBeenCalledWith("-");
+    });
+
     it("should handle multiplication operator", () => {
       simulateKeyPress("*");
       expect(mockOnButtonClick).toHaveBeenCalledWith("×");
     });
 
     it("should handle division operator", () => {
+      simulateKeyPress("/");
+      expect(mockOnButtonClick).toHaveBeenCalledWith("÷");
+    });
+
+    it("should handle division operator without Shift", () => {
       simulateKeyPress("/");
       expect(mockOnButtonClick).toHaveBeenCalledWith("÷");
     });
@@ -118,8 +128,18 @@ describe("useKeyboardNavigation", () => {
       expect(mockOnButtonClick).not.toHaveBeenCalled();
     });
 
-    it("should ignore Shift + key combinations", () => {
+    it("should allow Shift + operator keys", () => {
       simulateKeyPress("+", { shiftKey: true });
+      expect(mockOnButtonClick).toHaveBeenCalledWith("+");
+    });
+
+    it("should allow Shift + multiplication key", () => {
+      simulateKeyPress("*", { shiftKey: true });
+      expect(mockOnButtonClick).toHaveBeenCalledWith("×");
+    });
+
+    it("should ignore Shift + non-operator keys", () => {
+      simulateKeyPress("5", { shiftKey: true });
       expect(mockOnButtonClick).not.toHaveBeenCalled();
     });
 

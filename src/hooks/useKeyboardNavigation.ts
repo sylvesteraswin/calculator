@@ -9,8 +9,16 @@ export const useKeyboardNavigation = ({
 }: UseKeyboardNavigationProps) => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      // Ignore if any modifier keys are pressed (browser shortcuts)
-      if (event.ctrlKey || event.shiftKey || event.metaKey || event.altKey) {
+      // Define operator keys that require Shift
+      const shiftOperatorKeys = ["+", "*"];
+
+      // Ignore if modifier keys are pressed, except for Shift + operator keys
+      if (event.ctrlKey || event.metaKey || event.altKey) {
+        return;
+      }
+
+      // Allow Shift + operator keys, but ignore other Shift combinations
+      if (event.shiftKey && !shiftOperatorKeys.includes(event.key)) {
         return;
       }
 
