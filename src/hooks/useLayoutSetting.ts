@@ -1,30 +1,38 @@
-import type { SwitchProps } from "@fluentui/react-components";
+import type { SelectProps } from "@fluentui/react-components";
 import { useState, useMemo } from "react";
 
-import type { ButtonConfig } from "../lib/button-config";
 import {
   buttonLayoutConfig,
   buttonCorrectedLayoutConfig,
+  buttonAppleLayoutConfig,
 } from "../lib/button-config";
 
-export const useLayoutSetting = () => {
-  const [layoutConfig, setLayoutConfig] =
-    useState<ButtonConfig[][]>(buttonLayoutConfig);
-  const [correctLayoutValue, setCorrectLayoutValue] = useState(false);
+type LayoutType = "default" | "corrected" | "apple";
 
-  const handleCorrectLayoutChange: SwitchProps["onChange"] = (_, data) => {
-    setCorrectLayoutValue(data.checked);
-    setLayoutConfig(
-      data.checked ? buttonCorrectedLayoutConfig : buttonLayoutConfig
-    );
+export const useLayoutSetting = () => {
+  const [layoutType, setLayoutType] = useState<LayoutType>("default");
+
+  const layoutConfig = useMemo(() => {
+    switch (layoutType) {
+      case "corrected":
+        return buttonCorrectedLayoutConfig;
+      case "apple":
+        return buttonAppleLayoutConfig;
+      default:
+        return buttonLayoutConfig;
+    }
+  }, [layoutType]);
+
+  const handleLayoutChange: SelectProps["onChange"] = (_, data) => {
+    setLayoutType(data.value as LayoutType);
   };
 
-  const correctLayoutProps: SwitchProps = useMemo(() => {
+  const selectProps: SelectProps = useMemo(() => {
     return {
-      checked: correctLayoutValue,
-      onChange: handleCorrectLayoutChange,
+      value: layoutType,
+      onChange: handleLayoutChange,
     };
-  }, [correctLayoutValue]);
+  }, [layoutType]);
 
-  return { layoutConfig, correctLayoutProps };
+  return { layoutConfig, selectProps };
 };

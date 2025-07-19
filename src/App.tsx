@@ -18,7 +18,7 @@ const customTheme = {
 };
 
 function App() {
-  const { layoutConfig, correctLayoutProps } = useLayoutSetting();
+  const { layoutConfig, selectProps } = useLayoutSetting();
   const { handleButtonClick, displayValue, value, lastOperation } =
     useCalculator();
 
@@ -37,6 +37,7 @@ function App() {
     <>
       <FluentProvider theme={customTheme}>
         <LoadingScreen />
+        <Controls selectProps={selectProps} />
         <Wrapper>
           <Screen
             lastOperation={
@@ -50,7 +51,6 @@ function App() {
             ))}
           </ButtonWrapper>
         </Wrapper>
-        <Controls correctLayoutProps={correctLayoutProps} />
       </FluentProvider>
     </>
   );

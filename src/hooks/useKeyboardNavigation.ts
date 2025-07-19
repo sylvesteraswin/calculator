@@ -9,6 +9,11 @@ export const useKeyboardNavigation = ({
 }: UseKeyboardNavigationProps) => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      // Ignore if any modifier keys are pressed (browser shortcuts)
+      if (event.ctrlKey || event.shiftKey || event.metaKey || event.altKey) {
+        return;
+      }
+
       // Prevent default behavior for calculator keys
       const calculatorKeys = [
         "0",
@@ -76,6 +81,10 @@ export const useKeyboardNavigation = ({
         case "P":
           // Toggle positive/negative (alternative to ±)
           onButtonClick("±");
+          break;
+        case "Backspace":
+          // Delete last character/operator
+          onButtonClick("DEL");
           break;
       }
     };

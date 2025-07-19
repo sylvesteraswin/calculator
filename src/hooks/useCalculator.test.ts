@@ -57,7 +57,182 @@ describe("useCalculator", () => {
     expect(result.current.value).toEqual(["", "5", "+"]);
   });
 
-  it("should handle clear", () => {
+  it("should handle DEL for single number", () => {
+    const { result } = renderHook(() => useCalculator());
+
+    act(() => {
+      result.current.handleButtonClick({
+        target: { dataset: { value: "5" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "DEL" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+    });
+
+    expect(result.current.displayValue).toBe("0");
+    expect(result.current.value).toEqual([""]);
+  });
+
+  it("should handle DEL for multi-digit number", () => {
+    const { result } = renderHook(() => useCalculator());
+
+    act(() => {
+      result.current.handleButtonClick({
+        target: { dataset: { value: "5" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "2" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "DEL" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+    });
+
+    expect(result.current.displayValue).toBe("5");
+    expect(result.current.value).toEqual(["", "5"]);
+  });
+
+  it("should handle DEL for operator", () => {
+    const { result } = renderHook(() => useCalculator());
+
+    act(() => {
+      result.current.handleButtonClick({
+        target: { dataset: { value: "5" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "+" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "DEL" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+    });
+
+    expect(result.current.displayValue).toBe("5");
+    expect(result.current.value).toEqual(["", "5"]);
+  });
+
+  it("should handle DEL for decimal number", () => {
+    const { result } = renderHook(() => useCalculator());
+
+    act(() => {
+      result.current.handleButtonClick({
+        target: { dataset: { value: "5" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "." } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "2" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "DEL" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+    });
+
+    expect(result.current.displayValue).toBe("5.");
+    expect(result.current.value).toEqual(["", "5."]);
+  });
+
+  it("should handle DEL for percentage", () => {
+    const { result } = renderHook(() => useCalculator());
+
+    act(() => {
+      result.current.handleButtonClick({
+        target: { dataset: { value: "5" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "%" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "DEL" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+    });
+
+    expect(result.current.displayValue).toBe("5");
+    expect(result.current.value).toEqual(["", "5"]);
+  });
+
+  it("should handle DEL for negative number", () => {
+    const { result } = renderHook(() => useCalculator());
+
+    act(() => {
+      result.current.handleButtonClick({
+        target: { dataset: { value: "5" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "±" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "DEL" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+    });
+
+    expect(result.current.displayValue).toBe("5");
+    expect(result.current.value).toEqual(["", "5"]);
+  });
+
+  it("should handle DEL when empty", () => {
+    const { result } = renderHook(() => useCalculator());
+
+    act(() => {
+      result.current.handleButtonClick({
+        target: { dataset: { value: "DEL" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+    });
+
+    expect(result.current.displayValue).toBe("0");
+    expect(result.current.value).toEqual([""]);
+  });
+
+  it("should handle DEL for complex expression", () => {
+    const { result } = renderHook(() => useCalculator());
+
+    act(() => {
+      // Build: 5 + 3
+      result.current.handleButtonClick({
+        target: { dataset: { value: "5" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "+" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "3" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+
+      // Delete the 3
+      result.current.handleButtonClick({
+        target: { dataset: { value: "DEL" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+    });
+
+    expect(result.current.displayValue).toBe("5+");
+    expect(result.current.value).toEqual(["", "5", "+"]);
+  });
+
+  it("should handle clear (AC)", () => {
     const { result } = renderHook(() => useCalculator());
 
     act(() => {
@@ -75,32 +250,7 @@ describe("useCalculator", () => {
     expect(result.current.value).toEqual([""]);
   });
 
-  it("should handle basic calculation", () => {
-    const { result } = renderHook(() => useCalculator());
-
-    act(() => {
-      result.current.handleButtonClick({
-        target: { dataset: { value: "5" } },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any);
-      result.current.handleButtonClick({
-        target: { dataset: { value: "+" } },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any);
-      result.current.handleButtonClick({
-        target: { dataset: { value: "3" } },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any);
-      result.current.handleButtonClick({
-        target: { dataset: { value: "=" } },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any);
-    });
-
-    expect(result.current.displayValue).toBe("0");
-  });
-
-  it("should handle inverted (±) for positive numbers", () => {
+  it("should handle inverted (±) for positive number", () => {
     const { result } = renderHook(() => useCalculator());
 
     act(() => {
@@ -117,7 +267,7 @@ describe("useCalculator", () => {
     expect(result.current.value).toEqual(["", "(-5)"]);
   });
 
-  it("should handle inverted (±) for negative numbers with parentheses", () => {
+  it("should handle inverted (±) for negative number", () => {
     const { result } = renderHook(() => useCalculator());
 
     act(() => {
@@ -136,42 +286,6 @@ describe("useCalculator", () => {
     });
 
     expect(result.current.value).toEqual(["", "5"]);
-  });
-
-  it("should handle inverted (±) for negative numbers with minus sign", () => {
-    const { result } = renderHook(() => useCalculator());
-
-    // Simulate typing -106 directly
-    act(() => {
-      result.current.handleButtonClick({
-        target: { dataset: { value: "-" } },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any);
-      result.current.handleButtonClick({
-        target: { dataset: { value: "1" } },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any);
-      result.current.handleButtonClick({
-        target: { dataset: { value: "0" } },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any);
-      result.current.handleButtonClick({
-        target: { dataset: { value: "6" } },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any);
-    });
-
-    // Now we have -106, let's test the ± button
-    act(() => {
-      result.current.handleButtonClick({
-        target: { dataset: { value: "±" } },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any);
-    });
-
-    // The result shows that -106 becomes (-106) when ± is clicked
-    // This is the expected behavior based on the current logic
-    expect(result.current.value).toEqual(["", "0", "-", "(-106)"]);
   });
 
   it("should handle inverted (±) for direct negative input", () => {

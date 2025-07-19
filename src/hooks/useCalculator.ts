@@ -7,6 +7,7 @@ const decimal = ".";
 const inverted = "±";
 const percentage = "%";
 const clear = "AC";
+const del = "DEL";
 const equals = "=";
 
 export const useCalculator = () => {
@@ -109,6 +110,61 @@ export const useCalculator = () => {
         // - Clears both current value and last operation history
         setValue([""]);
         setLastOperation(null);
+        break;
+      case del === clickedValue:
+        // Delete (DEL) Logic:
+        // - If last value is an operator, remove the entire operator
+        // - If last value is a number/decimal/percentage, remove last character
+        // - If last value becomes empty after deletion, remove the element
+        // - If no values left, reset to empty state
+        setValue((prev) => {
+          if (prev.length === 0) {
+            return prev; // Do nothing if no values
+          }
+
+          const newArray = [...prev];
+          const lastIndex = prev.length - 1;
+          const lastValue = prev[lastIndex];
+
+          // If last value is an operator, remove it entirely
+          if (operators.includes(lastValue)) {
+            newArray.splice(lastIndex, 1);
+          } else {
+            // For numbers, decimals, percentages, etc.
+            if (lastValue.length === 1) {
+              // If it's the last character, remove the element entirely
+              newArray.splice(lastIndex, 1);
+            } else {
+              // Remove last character
+              const newLastValue = lastValue.slice(0, -1);
+
+              // Special handling for negative numbers with parentheses
+              if (lastValue.startsWith("(-") && lastValue.endsWith(")")) {
+                // For negative numbers like (-5), if we're deleting and end up with incomplete parentheses
+                // or just the opening, convert back to positive number
+                if (
+                  newLastValue === "(-" ||
+                  (newLastValue.startsWith("(-") && !newLastValue.endsWith(")"))
+                ) {
+                  // Extract the number from (-5) -> 5
+                  const numberPart = lastValue.slice(2, -1);
+                  newArray[lastIndex] = numberPart;
+                } else {
+                  newArray[lastIndex] = newLastValue;
+                }
+              } else {
+                newArray[lastIndex] = newLastValue;
+              }
+            }
+          }
+
+          // If we end up with no values, reset to empty state
+          if (newArray.length === 0) {
+            return [""];
+          }
+
+          return newArray;
+        });
         break;
       case equals === clickedValue: {
         // Equals (=) Logic:
