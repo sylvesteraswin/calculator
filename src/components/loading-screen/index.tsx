@@ -8,24 +8,35 @@ export const LoadingScreen = () => {
   if (!isLoading) return null;
 
   return (
-    <div className={styles.overlay}>
+    <div
+      className={styles.overlay}
+      role="dialog"
+      aria-label="Loading calculator"
+      aria-describedby="loading-description"
+    >
       <div className={styles.container}>
-        <div>
+        <header>
           <h1 className={styles.title}>Calculator</h1>
-          <p className={styles.subtitle}>
+          <p className={styles.subtitle} id="loading-description">
             {loadingProgress < 100 ? "Loading..." : "Ready!"}
           </p>
-        </div>
+        </header>
 
         {/* Progress bar */}
         <div className={styles.progressContainer}>
           <div
             className={styles.progressBar}
             style={{ width: `${loadingProgress}%` }}
+            role="progressbar"
+            aria-valuenow={loadingProgress}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label="Loading progress"
+            aria-describedby="progress-text"
           />
         </div>
 
-        <p className={styles.progressText}>
+        <p className={styles.progressText} id="progress-text">
           {Math.round(loadingProgress)}% loaded
         </p>
       </div>

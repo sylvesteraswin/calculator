@@ -8,5 +8,13 @@ interface Props {
 export const ButtonWrapper = ({ children }: Props) => {
   const styles = useStyles();
 
-  return <div className={styles.buttonWrapper}>{children}</div>;
+  return (
+    <section
+      className={styles.buttonWrapper}
+      role="group"
+      aria-label="Calculator buttons"
+    >
+      {children}
+    </section>
+  );
 };

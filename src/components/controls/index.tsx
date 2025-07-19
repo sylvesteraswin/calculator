@@ -10,15 +10,23 @@ export const Controls = ({ selectProps }: ControlsProps) => {
   const styles = useStyles();
 
   return (
-    <div className={styles.controlsWrapper}>
+    <section
+      className={styles.controlsWrapper}
+      role="group"
+      aria-label="Calculator settings"
+    >
       <div className={styles.controls}>
-        <div>Layout Style</div>
-        <Select {...selectProps}>
+        <label htmlFor="layout-select">Layout Style</label>
+        <Select
+          {...selectProps}
+          id="layout-select"
+          aria-label="Select calculator layout"
+        >
           <option value="default">Default</option>
           <option value="corrected">Corrected</option>
           <option value="apple">Apple</option>
         </Select>
       </div>
-    </div>
+    </section>
   );
 };

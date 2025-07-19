@@ -34,6 +34,8 @@ export const Button = ({ value, styleType, span, size, onClick }: Props) => {
         return "Equals - Calculate result";
       case ".":
         return "Decimal Point - Add decimal to number";
+      case "DEL":
+        return "Delete - Remove last character or operation";
       default:
         // For numbers 0-9
         if (/^[0-9]$/.test(buttonValue)) {
@@ -60,6 +62,8 @@ export const Button = ({ value, styleType, span, size, onClick }: Props) => {
         return "+ key";
       case ".":
         return ". key";
+      case "DEL":
+        return "Backspace key";
       default:
         if (/^[0-9]$/.test(buttonValue)) {
           return `${buttonValue} key`;
@@ -68,11 +72,18 @@ export const Button = ({ value, styleType, span, size, onClick }: Props) => {
     }
   };
 
+  // Determine button type for semantic meaning
+  const getButtonType = (buttonValue: string): "button" | "submit" => {
+    return buttonValue === "=" ? "submit" : "button";
+  };
+
   const accessibleLabel = getAccessibleLabel(value);
   const keyboardShortcut = getKeyboardShortcut(value);
+  const buttonType = getButtonType(value);
 
   return (
     <FluentButton
+      type={buttonType}
       className={mergeClasses(
         styles.button,
         styleType === "inverted" && styles.buttonInverted,
