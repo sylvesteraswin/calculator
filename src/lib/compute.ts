@@ -1,3 +1,5 @@
+import { validateNumber, logError } from "./error-handling";
+
 export const compute = (stack: string[]) => {
   // Compute Function Logic Overview:
   // 1. Input validation - handles empty/invalid input
@@ -68,7 +70,21 @@ export const compute = (stack: string[]) => {
       if (currentChar == "÷") {
         // Handle division by zero
         if (nextNum === 0) {
-          return Infinity; // This will be caught by the calling function
+          if (prevNum === 0) {
+            // 0 ÷ 0 = NaN
+            logError("ZERO_DIVIDED_BY_ZERO", {
+              numerator: prevNum,
+              denominator: nextNum,
+            });
+            return NaN;
+          } else {
+            // Any number ÷ 0 = Infinity
+            logError("DIVISION_BY_ZERO", {
+              numerator: prevNum,
+              denominator: nextNum,
+            });
+            return Infinity;
+          }
         }
         tempSum = prevNum / nextNum;
       }
@@ -77,9 +93,15 @@ export const compute = (stack: string[]) => {
         tempSum = prevNum * nextNum;
       }
 
-      // Handle overflow/underflow
-      if (!isFinite(tempSum)) {
-        return tempSum; // Return Infinity or -Infinity
+      // Validate result for overflow/underflow
+      const numberValidation = validateNumber(tempSum);
+      if (numberValidation.hasError) {
+        logError(numberValidation.error!, {
+          operation: currentChar,
+          operands: [prevNum, nextNum],
+          result: tempSum,
+        });
+        return tempSum; // Return the actual result (Infinity, -Infinity, or NaN)
       }
 
       processedStack.splice(i - 1, 3, `${tempSum}`);
@@ -121,7 +143,13 @@ export const compute = (stack: string[]) => {
     }
 
     // Check for overflow/underflow after each operation
-    if (!isFinite(result)) {
+    const numberValidation = validateNumber(result);
+    if (numberValidation.hasError) {
+      logError(numberValidation.error!, {
+        operation: currentOperator,
+        operand: num,
+        result,
+      });
       return result;
     }
   }
@@ -129,6 +157,13 @@ export const compute = (stack: string[]) => {
   // Handle floating point precision issues
   // Round to reasonable precision to avoid floating point errors
   const roundedResult = Math.round(result * 1000000) / 1000000;
+
+  // Final validation of the result
+  const finalValidation = validateNumber(roundedResult);
+  if (finalValidation.hasError) {
+    logError(finalValidation.error!, { finalResult: roundedResult });
+    return roundedResult; // Return the actual result even if it's Infinity/NaN
+  }
 
   return roundedResult;
 };
