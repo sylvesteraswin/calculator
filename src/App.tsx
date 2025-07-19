@@ -6,6 +6,7 @@ import { Wrapper } from "./components/wrapper";
 import { Screen } from "./components/screen";
 import { ButtonWrapper } from "./components/button-wrapper";
 import { Button } from "./components/button";
+import { LoadingScreen } from "./components/loading-screen";
 
 import { useCalculator } from "./hooks/useCalculator";
 
@@ -19,21 +20,24 @@ function App() {
     useCalculator();
 
   return (
-    <FluentProvider theme={customTheme}>
-      <Wrapper>
-        <Screen
-          lastOperation={
-            lastOperation && value.length === 1 ? lastOperation : ""
-          }
-          value={displayValue}
-        />
-        <ButtonWrapper>
-          {buttonLayoutConfig.flat().map((config, index) => (
-            <Button key={index} {...config} onClick={handleButtonClick} />
-          ))}
-        </ButtonWrapper>
-      </Wrapper>
-    </FluentProvider>
+    <>
+      <FluentProvider theme={customTheme}>
+        <LoadingScreen />
+        <Wrapper>
+          <Screen
+            lastOperation={
+              lastOperation && value.length === 1 ? lastOperation : ""
+            }
+            value={displayValue}
+          />
+          <ButtonWrapper>
+            {buttonLayoutConfig.flat().map((config, index) => (
+              <Button key={index} {...config} onClick={handleButtonClick} />
+            ))}
+          </ButtonWrapper>
+        </Wrapper>
+      </FluentProvider>
+    </>
   );
 }
 
