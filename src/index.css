@@ -15,3 +15,22 @@ body {
   align-items: center;
   background-color: #f0f0f0;
 }
+
+/* Keyboard highlight feedback */
+.keyboard-highlight {
+  animation: keyboard-press 0.15s ease-out;
+  transform: scale(0.95);
+  box-shadow: 0 0 0 2px var(--screenTextColor) !important;
+}
+
+@keyframes keyboard-press {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

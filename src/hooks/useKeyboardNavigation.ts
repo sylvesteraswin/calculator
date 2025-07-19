@@ -48,6 +48,7 @@ export const useKeyboardNavigation = ({
       }
 
       // Map keyboard keys to calculator buttons
+      let buttonValue: string | null = null;
       switch (event.key) {
         case "0":
         case "1":
@@ -59,41 +60,61 @@ export const useKeyboardNavigation = ({
         case "7":
         case "8":
         case "9":
-          onButtonClick(event.key);
+          buttonValue = event.key;
           break;
         case ".":
-          onButtonClick(".");
+          buttonValue = ".";
           break;
         case "+":
-          onButtonClick("+");
+          buttonValue = "+";
           break;
         case "-":
-          onButtonClick("-");
+          buttonValue = "-";
           break;
         case "*":
-          onButtonClick("×");
+          buttonValue = "×";
           break;
         case "/":
-          onButtonClick("÷");
+          buttonValue = "÷";
           break;
         case "Enter":
-          onButtonClick("=");
+          buttonValue = "=";
           break;
         case "Escape":
-          onButtonClick("AC");
+          buttonValue = "AC";
           break;
         case "%":
-          onButtonClick("%");
+          buttonValue = "%";
           break;
         case "p":
         case "P":
           // Toggle positive/negative (alternative to ±)
-          onButtonClick("±");
+          buttonValue = "±";
           break;
         case "Backspace":
           // Delete last character/operator
-          onButtonClick("DEL");
+          buttonValue = "DEL";
           break;
+      }
+
+      if (buttonValue) {
+        // Find and highlight the corresponding button (if it exists)
+        const buttonElement = document.querySelector(
+          `[data-value="${buttonValue}"]`
+        ) as HTMLButtonElement;
+
+        if (buttonElement) {
+          // Add visual feedback class
+          buttonElement.classList.add("keyboard-highlight");
+
+          // Remove the highlight after a short delay
+          setTimeout(() => {
+            buttonElement.classList.remove("keyboard-highlight");
+          }, 150);
+        }
+
+        // Always trigger the button click, regardless of whether the element was found
+        onButtonClick(buttonValue);
       }
     };
 

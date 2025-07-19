@@ -367,4 +367,47 @@ describe("useKeyboardNavigation", () => {
       expect(mockOnButtonClick).toHaveBeenNthCalledWith(3, "3");
     });
   });
+
+  describe("Visual feedback", () => {
+    it("should add keyboard highlight class when button is found", () => {
+      // Mock DOM element
+      const mockButton = {
+        classList: {
+          add: vi.fn(),
+          remove: vi.fn(),
+        },
+      };
+
+      const querySelectorSpy = vi
+        .spyOn(document, "querySelector")
+        .mockReturnValue(mockButton as unknown as HTMLButtonElement);
+      const setTimeoutSpy = vi.spyOn(window, "setTimeout");
+
+      simulateKeyPress("5");
+
+      expect(querySelectorSpy).toHaveBeenCalledWith('[data-value="5"]');
+      expect(mockButton.classList.add).toHaveBeenCalledWith(
+        "keyboard-highlight"
+      );
+      expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 150);
+
+      querySelectorSpy.mockRestore();
+      setTimeoutSpy.mockRestore();
+    });
+
+    it("should not add highlight class when button is not found", () => {
+      const querySelectorSpy = vi
+        .spyOn(document, "querySelector")
+        .mockReturnValue(null);
+      const setTimeoutSpy = vi.spyOn(window, "setTimeout");
+
+      simulateKeyPress("5");
+
+      expect(querySelectorSpy).toHaveBeenCalledWith('[data-value="5"]');
+      expect(setTimeoutSpy).not.toHaveBeenCalled();
+
+      querySelectorSpy.mockRestore();
+      setTimeoutSpy.mockRestore();
+    });
+  });
 });
