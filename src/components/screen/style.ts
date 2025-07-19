@@ -7,6 +7,7 @@ export const useStyles = makeStyles({
     height: "var(--screenHeight)",
     display: "flex",
     flexDirection: "column",
+    overflow: "hidden",
   },
   screenValue: {
     flex: 1,

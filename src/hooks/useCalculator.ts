@@ -1,6 +1,10 @@
 import type { MouseEventHandler } from "react";
 import { useMemo, useState } from "react";
 import { compute } from "../lib/compute";
+import {
+  formatNumberForDisplay,
+  formatExpressionForDisplay,
+} from "../lib/format-number";
 
 const operators = ["+", "-", "×", "÷"];
 const decimal = ".";
@@ -18,7 +22,7 @@ export const useCalculator = () => {
     if (computedValue.length === 0) {
       return "0";
     }
-    return computedValue;
+    return formatNumberForDisplay(computedValue);
   }, [value]);
 
   const handleButtonClick: MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -200,8 +204,8 @@ export const useCalculator = () => {
           return;
         }
 
-        setLastOperation(cleanValues.join(""));
-        setValue([result.toString()]);
+        setLastOperation(formatExpressionForDisplay(cleanValues.join("")));
+        setValue([formatNumberForDisplay(result)]);
         break;
       }
       case operators.includes(clickedValue):
