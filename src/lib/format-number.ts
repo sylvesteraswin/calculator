@@ -56,7 +56,7 @@ export const formatExpressionForDisplay = (
   const parts = expression.split(/([+\-×÷])/);
 
   return parts
-    .map((part) => {
+    .map(part => {
       // Skip operators
       if (["+", "-", "×", "÷"].includes(part)) {
         return part;

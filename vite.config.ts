@@ -4,7 +4,7 @@ import { visualizer } from "rollup-plugin-visualizer";
 import { VitePWA } from "vite-plugin-pwa";
 
 const ReactCompilerConfig = {
-  target: "18", // Target React 18
+  target: "19", // Target React 19
 };
 
 export default defineConfig({
@@ -72,7 +72,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
+        manualChunks: id => {
           // Core React libraries
           if (
             id.includes("node_modules/react/") ||

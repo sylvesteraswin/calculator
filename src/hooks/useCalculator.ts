@@ -32,7 +32,7 @@ export const useCalculator = () => {
   }, [lastOperation]);
 
   const handleButtonClick: MouseEventHandler<HTMLButtonElement> = useCallback(
-    (e) => {
+    e => {
       const button = e.target as HTMLButtonElement;
       const clickedValue = button.dataset.value;
 
@@ -55,7 +55,7 @@ export const useCalculator = () => {
           // - Prevents multiple decimal points in same number
           // - If last value is empty, adds "0." instead of just "."
           // - Otherwise appends "." to existing number
-          setValue((prev) => {
+          setValue(prev => {
             const lastIndex = prev.length - 1;
             const lastValue = prev[lastIndex];
             if (lastValue.includes(".")) {
@@ -73,7 +73,7 @@ export const useCalculator = () => {
           // - Toggles between positive and negative with parentheses for visual clarity
           // - Positive: "5" → "(-5)" (adds parentheses and negative)
           // - Negative: "(-5)" → "5" (removes parentheses and negative)
-          setValue((prev) => {
+          setValue(prev => {
             const lastIndex = prev.length - 1;
             const lastValue = prev[lastIndex];
             if (lastValue === "" || operators.includes(lastValue)) {
@@ -104,7 +104,7 @@ export const useCalculator = () => {
           // - Only works on numbers, not operators or empty values
           // - Appends "%" symbol to current number
           // - Will be converted to decimal in compute function (50% → 0.5)
-          setValue((prev) => {
+          setValue(prev => {
             const lastIndex = prev.length - 1;
             const lastValue = prev[lastIndex];
             if (lastValue === "" || operators.includes(lastValue)) {
@@ -128,7 +128,7 @@ export const useCalculator = () => {
           // - If last value is a number/decimal/percentage, remove last character
           // - If last value becomes empty after deletion, remove the element
           // - If no values left, reset to empty state
-          setValue((prev) => {
+          setValue(prev => {
             if (prev.length === 0) {
               return prev; // Do nothing if no values
             }
@@ -190,9 +190,7 @@ export const useCalculator = () => {
           // Handle empty or invalid expressions
           if (
             valuesToCompute.length === 0 ||
-            valuesToCompute.every(
-              (val) => val === "" || operators.includes(val)
-            )
+            valuesToCompute.every(val => val === "" || operators.includes(val))
           ) {
             setValue([""]);
             return;
@@ -227,7 +225,7 @@ export const useCalculator = () => {
           // - Handles leading operators by adding "0" before them
           // - Otherwise adds operator as new element
           // - Prevents consecutive operators in expression
-          setValue((prev) => {
+          setValue(prev => {
             const lastIndex = prev.length - 1;
             const lastValue = prev[lastIndex];
 
@@ -253,7 +251,7 @@ export const useCalculator = () => {
           // - Handles decimal numbers by appending after decimal point
           // - Limits number length to 15 digits for performance
           // - Adds as new element if last value is operator or empty
-          setValue((prev) => {
+          setValue(prev => {
             const lastIndex = prev.length - 1;
             const lastValue = prev[lastIndex];
 

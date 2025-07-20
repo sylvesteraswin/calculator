@@ -24,7 +24,7 @@ function App() {
 
   // Enable keyboard navigation
   useKeyboardNavigation({
-    onButtonClick: (value) => {
+    onButtonClick: value => {
       // Simulate button click for keyboard input
       const event = {
         target: { dataset: { value } },

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Load NVM if it exists
+[ -s "$HOME/.nvm/nvm.sh" ] && \. "$HOME/.nvm/nvm.sh"
+
+# Run lint-staged to format and lint staged files
+npx lint-staged
+
+# Run tests
+npm test

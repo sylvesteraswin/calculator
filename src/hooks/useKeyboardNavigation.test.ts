@@ -43,7 +43,7 @@ describe("useKeyboardNavigation", () => {
     it("should handle number keys 0-9", () => {
       const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
-      numbers.forEach((number) => {
+      numbers.forEach(number => {
         simulateKeyPress(number);
         expect(mockOnButtonClick).toHaveBeenCalledWith(number);
         mockOnButtonClick.mockClear();
@@ -179,7 +179,7 @@ describe("useKeyboardNavigation", () => {
         "j",
       ];
 
-      nonCalculatorKeys.forEach((key) => {
+      nonCalculatorKeys.forEach(key => {
         simulateKeyPress(key);
         expect(mockOnButtonClick).not.toHaveBeenCalled();
         mockOnButtonClick.mockClear();
@@ -202,7 +202,7 @@ describe("useKeyboardNavigation", () => {
         "F12",
       ];
 
-      functionKeys.forEach((key) => {
+      functionKeys.forEach(key => {
         simulateKeyPress(key);
         expect(mockOnButtonClick).not.toHaveBeenCalled();
         mockOnButtonClick.mockClear();
@@ -212,7 +212,7 @@ describe("useKeyboardNavigation", () => {
     it("should not handle arrow keys", () => {
       const arrowKeys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
 
-      arrowKeys.forEach((key) => {
+      arrowKeys.forEach(key => {
         simulateKeyPress(key);
         expect(mockOnButtonClick).not.toHaveBeenCalled();
         mockOnButtonClick.mockClear();
@@ -232,7 +232,7 @@ describe("useKeyboardNavigation", () => {
         "PageDown",
       ];
 
-      otherKeys.forEach((key) => {
+      otherKeys.forEach(key => {
         simulateKeyPress(key);
         expect(mockOnButtonClick).not.toHaveBeenCalled();
         mockOnButtonClick.mockClear();
@@ -262,7 +262,7 @@ describe("useKeyboardNavigation", () => {
         "Escape",
       ];
 
-      calculatorKeys.forEach((key) => {
+      calculatorKeys.forEach(key => {
         const event = createKeyboardEvent(key);
         const preventDefaultSpy = vi.spyOn(event, "preventDefault");
 
@@ -276,7 +276,7 @@ describe("useKeyboardNavigation", () => {
     it("should not prevent default behavior for non-calculator keys", () => {
       const nonCalculatorKeys = ["a", "b", "c", "Tab", "F1"];
 
-      nonCalculatorKeys.forEach((key) => {
+      nonCalculatorKeys.forEach(key => {
         const event = createKeyboardEvent(key);
         const preventDefaultSpy = vi.spyOn(event, "preventDefault");
 
