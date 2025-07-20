@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, lazy, Suspense } from "react";
 import { FluentProvider, webLightTheme } from "@fluentui/react-components";
 import { customTokens } from "./lib/custom-tokens";
 
@@ -7,11 +7,16 @@ import { Screen } from "./components/screen";
 import { ButtonWrapper } from "./components/button-wrapper";
 import { Button } from "./components/button";
 import { LoadingScreen } from "./components/loading-screen";
-import { Controls } from "./components/controls";
+import { ControlsLoading } from "./components/controls/loading";
 
 import { useCalculator } from "./hooks/useCalculator";
 import { useLayoutSetting } from "./hooks/useLayoutSetting";
 import { useKeyboardNavigation } from "./hooks/useKeyboardNavigation";
+
+// Lazy load the Controls component
+const Controls = lazy(() =>
+  import("./components/controls").then(module => ({ default: module.Controls }))
+);
 
 const customTheme = {
   ...webLightTheme,
@@ -43,7 +48,9 @@ function App() {
     <>
       <FluentProvider theme={customTheme}>
         <LoadingScreen />
-        <Controls selectProps={selectProps} />
+        <Suspense fallback={<ControlsLoading />}>
+          <Controls selectProps={selectProps} />
+        </Suspense>
         <Wrapper>
           <Screen
             lastOperation={
