@@ -112,10 +112,14 @@ npm run build
 
 ```bash
 npm run dev          # Start development server
-npm run build        # Build for production
+npm run build        # Build for production (includes E2E tests)
 npm run preview      # Preview production build
-npm test             # Run all tests
+npm test             # Run unit and integration tests
 npm run test:watch   # Run tests in watch mode
+npm run test:e2e     # Run E2E tests with Playwright
+npm run test:e2e:ui  # Interactive E2E testing
+npm run test:e2e:debug # Debug E2E tests
+npm run test:e2e:report # View E2E test reports
 npm run lint         # Run ESLint
 ```
 
@@ -210,29 +214,87 @@ export const useKeyboardNavigation = () => {
 
 ### **Test Coverage**
 
-- **Unit Tests**: Tests covering all calculator logic
+- **Unit Tests**: 252 tests covering all calculator logic
+- **Integration Tests**: React component testing with Testing Library
+- **E2E Tests**: Playwright-based end-to-end testing
 - **Error Scenarios**: Comprehensive error condition testing
 - **Accessibility Tests**: Keyboard navigation and ARIA testing
-- **Component Tests**: React component testing with Testing Library
+- **Performance Tests**: Core Web Vitals monitoring
 
 ### **Test Categories**
 
 ```typescript
-// Error handling tests
-describe("Overflow/Underflow handling", () => {
-  // Tests for all error conditions
+// Unit tests - Core calculator logic
+describe("compute", () => {
+  // Error handling tests
+  // Overflow/Underflow tests
+  // Mathematical operations
 });
 
-// Accessibility tests
-describe("Keyboard navigation", () => {
-  // Tests for keyboard accessibility
-});
-
-// Component tests
+// Integration tests - React components
 describe("useCalculator", () => {
-  // Tests for calculator logic
+  // Calculator hook testing
+  // State management
+  // User interactions
+});
+
+// E2E tests - Full user workflows
+describe("Calculator E2E Tests", () => {
+  // Basic operations (+, -, ×, ÷)
+  // Decimal and percentage handling
+  // Keyboard navigation
+  // Performance monitoring
 });
 ```
+
+### **E2E Testing with Playwright**
+
+#### **Test Coverage**
+
+- ✅ **Core Operations**: Addition, subtraction, multiplication, division
+- ✅ **Advanced Features**: Decimal input, percentage calculations
+- ✅ **User Interactions**: Clear operations, keyboard navigation
+- ✅ **Visual Testing**: Screenshot comparisons for UI regression
+- ✅ **Performance Monitoring**: Core Web Vitals (LCP, FID, CLS)
+- ✅ **Accessibility**: Keyboard navigation and ARIA compliance
+
+#### **E2E Test Scripts**
+
+```bash
+npm run test:e2e        # Run all E2E tests
+npm run test:e2e:ui     # Interactive testing with UI
+npm run test:e2e:debug  # Debug mode for troubleshooting
+npm run test:e2e:report # View test reports
+```
+
+#### **E2E Test Features**
+
+- **Chrome-only Testing**: Focused on primary browser
+- **Visual Regression**: Screenshot comparisons
+- **Performance Metrics**: Core Web Vitals tracking
+- **Keyboard Testing**: Full keyboard navigation support
+- **Error Scenarios**: Division by zero, overflow handling
+- **CI/CD Integration**: Non-blocking deployment testing
+
+#### **Build Integration**
+
+```bash
+npm run build  # Runs postbuild E2E tests automatically
+```
+
+**Deployment Flow:**
+
+```
+Code Push → Build → Deploy → E2E Tests → Report Issues
+```
+
+#### **CI/CD Pipeline**
+
+- **Vercel Postbuild**: Automated E2E testing after deployment
+- **Test Reports**: HTML reports with screenshots and videos
+- **Performance Monitoring**: Core Web Vitals tracking
+- **Non-blocking**: E2E failures don't prevent deployment
+- **Real Environment**: Tests against actual deployed application
 
 ## 🚀 Performance Metrics
 
@@ -240,9 +302,11 @@ describe("useCalculator", () => {
 
 - **Bundle Size**: Optimized with tree shaking and code splitting (~2-5 kB reduction from lazy loading)
 - **Build Time**: Fast builds with Vite
-- **Test Execution**: Tests run in ~1.1 seconds
+- **Unit Test Execution**: 252 tests run in ~1.1 seconds
+- **E2E Test Execution**: 10 tests run in ~10-15 seconds
 - **Type Checking**: Full TypeScript compilation
 - **Initial Load**: Faster initial page load with progressive component loading
+- **Core Web Vitals**: LCP < 2.5s, FID < 100ms, CLS < 0.1
 
 ### **Optimization Features**
 
