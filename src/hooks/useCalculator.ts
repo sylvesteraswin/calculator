@@ -226,9 +226,7 @@ export const useCalculator = () => {
 
             return {
               newValue: [formatNumberForDisplay(result)],
-              newLastOperation: formatExpressionForDisplay(
-                cleanValues.join("")
-              ),
+              newLastOperation: cleanValues.join(""), // Store raw expression
             };
           };
 
