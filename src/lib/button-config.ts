@@ -1,3 +1,5 @@
+import { CALCULATOR_BUTTONS } from "./constants";
+
 export interface ButtonConfig {
   value: string;
   styleType: "default" | "light" | "inverted";
@@ -8,104 +10,104 @@ export interface ButtonConfig {
 export const buttonLayoutConfig: ButtonConfig[][] = [
   [
     {
-      value: "AC",
+      value: CALCULATOR_BUTTONS.CLEAR,
       styleType: "light",
     },
     {
-      value: "±",
+      value: CALCULATOR_BUTTONS.INVERTED,
       styleType: "light",
       size: "large",
     },
     {
-      value: "%",
+      value: CALCULATOR_BUTTONS.PERCENTAGE,
       styleType: "light",
     },
     {
-      value: "÷",
+      value: CALCULATOR_BUTTONS.DIVIDE,
       styleType: "inverted",
       size: "large",
     },
   ],
   [
     {
-      value: "1",
+      value: CALCULATOR_BUTTONS.ONE,
       styleType: "default",
       size: "large",
     },
     {
-      value: "2",
+      value: CALCULATOR_BUTTONS.TWO,
       styleType: "default",
       size: "large",
     },
     {
-      value: "3",
+      value: CALCULATOR_BUTTONS.THREE,
       styleType: "default",
       size: "large",
     },
     {
-      value: "×",
+      value: CALCULATOR_BUTTONS.MULTIPLY,
       styleType: "inverted",
       size: "large",
     },
   ],
   [
     {
-      value: "4",
+      value: CALCULATOR_BUTTONS.FOUR,
       styleType: "default",
       size: "large",
     },
     {
-      value: "5",
+      value: CALCULATOR_BUTTONS.FIVE,
       styleType: "default",
       size: "large",
     },
     {
-      value: "6",
+      value: CALCULATOR_BUTTONS.SIX,
       styleType: "default",
       size: "large",
     },
     {
-      value: "-",
+      value: CALCULATOR_BUTTONS.SUBTRACT,
       styleType: "inverted",
       size: "large",
     },
   ],
   [
     {
-      value: "7",
+      value: CALCULATOR_BUTTONS.SEVEN,
       styleType: "default",
       size: "large",
     },
     {
-      value: "8",
+      value: CALCULATOR_BUTTONS.EIGHT,
       styleType: "default",
       size: "large",
     },
     {
-      value: "9",
+      value: CALCULATOR_BUTTONS.NINE,
       styleType: "default",
       size: "large",
     },
     {
-      value: "+",
+      value: CALCULATOR_BUTTONS.ADD,
       styleType: "inverted",
       size: "large",
     },
   ],
   [
     {
-      value: "0",
+      value: CALCULATOR_BUTTONS.ZERO,
       styleType: "default",
       span: "2",
       size: "large",
     },
     {
-      value: ".",
+      value: CALCULATOR_BUTTONS.DECIMAL,
       styleType: "default",
       size: "large",
     },
     {
-      value: "=",
+      value: CALCULATOR_BUTTONS.EQUALS,
       styleType: "inverted",
       size: "large",
     },
@@ -115,104 +117,104 @@ export const buttonLayoutConfig: ButtonConfig[][] = [
 export const buttonCorrectedLayoutConfig: ButtonConfig[][] = [
   [
     {
-      value: "AC",
+      value: CALCULATOR_BUTTONS.CLEAR,
       styleType: "light",
     },
     {
-      value: "±",
+      value: CALCULATOR_BUTTONS.INVERTED,
       styleType: "light",
       size: "large",
     },
     {
-      value: "%",
+      value: CALCULATOR_BUTTONS.PERCENTAGE,
       styleType: "light",
     },
     {
-      value: "÷",
+      value: CALCULATOR_BUTTONS.DIVIDE,
       styleType: "inverted",
       size: "large",
     },
   ],
   [
     {
-      value: "7",
+      value: CALCULATOR_BUTTONS.SEVEN,
       styleType: "default",
       size: "large",
     },
     {
-      value: "8",
+      value: CALCULATOR_BUTTONS.EIGHT,
       styleType: "default",
       size: "large",
     },
     {
-      value: "9",
+      value: CALCULATOR_BUTTONS.NINE,
       styleType: "default",
       size: "large",
     },
     {
-      value: "×",
+      value: CALCULATOR_BUTTONS.MULTIPLY,
       styleType: "inverted",
       size: "large",
     },
   ],
   [
     {
-      value: "4",
+      value: CALCULATOR_BUTTONS.FOUR,
       styleType: "default",
       size: "large",
     },
     {
-      value: "5",
+      value: CALCULATOR_BUTTONS.FIVE,
       styleType: "default",
       size: "large",
     },
     {
-      value: "6",
+      value: CALCULATOR_BUTTONS.SIX,
       styleType: "default",
       size: "large",
     },
     {
-      value: "-",
+      value: CALCULATOR_BUTTONS.SUBTRACT,
       styleType: "inverted",
       size: "large",
     },
   ],
   [
     {
-      value: "1",
+      value: CALCULATOR_BUTTONS.ONE,
       styleType: "default",
       size: "large",
     },
     {
-      value: "2",
+      value: CALCULATOR_BUTTONS.TWO,
       styleType: "default",
       size: "large",
     },
     {
-      value: "3",
+      value: CALCULATOR_BUTTONS.THREE,
       styleType: "default",
       size: "large",
     },
     {
-      value: "+",
+      value: CALCULATOR_BUTTONS.ADD,
       styleType: "inverted",
       size: "large",
     },
   ],
   [
     {
-      value: "0",
+      value: CALCULATOR_BUTTONS.ZERO,
       styleType: "default",
       span: "2",
       size: "large",
     },
     {
-      value: ".",
+      value: CALCULATOR_BUTTONS.DECIMAL,
       styleType: "default",
       size: "large",
     },
     {
-      value: "=",
+      value: CALCULATOR_BUTTONS.EQUALS,
       styleType: "inverted",
       size: "large",
     },
@@ -222,107 +224,107 @@ export const buttonCorrectedLayoutConfig: ButtonConfig[][] = [
 export const buttonAppleLayoutConfig: ButtonConfig[][] = [
   [
     {
-      value: "DEL",
+      value: CALCULATOR_BUTTONS.DELETE,
       styleType: "light",
     },
     {
-      value: "AC",
+      value: CALCULATOR_BUTTONS.CLEAR,
       styleType: "light",
     },
     {
-      value: "%",
+      value: CALCULATOR_BUTTONS.PERCENTAGE,
       styleType: "light",
     },
     {
-      value: "÷",
+      value: CALCULATOR_BUTTONS.DIVIDE,
       styleType: "inverted",
       size: "large",
     },
   ],
   [
     {
-      value: "7",
+      value: CALCULATOR_BUTTONS.SEVEN,
       styleType: "default",
       size: "large",
     },
     {
-      value: "8",
+      value: CALCULATOR_BUTTONS.EIGHT,
       styleType: "default",
       size: "large",
     },
     {
-      value: "9",
+      value: CALCULATOR_BUTTONS.NINE,
       styleType: "default",
       size: "large",
     },
     {
-      value: "×",
+      value: CALCULATOR_BUTTONS.MULTIPLY,
       styleType: "inverted",
       size: "large",
     },
   ],
   [
     {
-      value: "4",
+      value: CALCULATOR_BUTTONS.FOUR,
       styleType: "default",
       size: "large",
     },
     {
-      value: "5",
+      value: CALCULATOR_BUTTONS.FIVE,
       styleType: "default",
       size: "large",
     },
     {
-      value: "6",
+      value: CALCULATOR_BUTTONS.SIX,
       styleType: "default",
       size: "large",
     },
     {
-      value: "-",
+      value: CALCULATOR_BUTTONS.SUBTRACT,
       styleType: "inverted",
       size: "large",
     },
   ],
   [
     {
-      value: "1",
+      value: CALCULATOR_BUTTONS.ONE,
       styleType: "default",
       size: "large",
     },
     {
-      value: "2",
+      value: CALCULATOR_BUTTONS.TWO,
       styleType: "default",
       size: "large",
     },
     {
-      value: "3",
+      value: CALCULATOR_BUTTONS.THREE,
       styleType: "default",
       size: "large",
     },
     {
-      value: "+",
+      value: CALCULATOR_BUTTONS.ADD,
       styleType: "inverted",
       size: "large",
     },
   ],
   [
     {
-      value: "±",
+      value: CALCULATOR_BUTTONS.INVERTED,
       styleType: "default",
       size: "large",
     },
     {
-      value: "0",
+      value: CALCULATOR_BUTTONS.ZERO,
       styleType: "default",
       size: "large",
     },
     {
-      value: ".",
+      value: CALCULATOR_BUTTONS.DECIMAL,
       styleType: "default",
       size: "large",
     },
     {
-      value: "=",
+      value: CALCULATOR_BUTTONS.EQUALS,
       styleType: "inverted",
       size: "large",
     },

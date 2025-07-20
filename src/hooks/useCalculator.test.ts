@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { renderHook, act } from "@testing-library/react";
+import { renderHook, act, waitFor } from "@testing-library/react";
 import { useCalculator } from "./useCalculator";
 
 describe("useCalculator", () => {
@@ -335,5 +335,238 @@ describe("useCalculator", () => {
 
     // Should remain unchanged since ± was clicked on an operator
     expect(result.current.value).toEqual(["", "5", "+"]);
+  });
+
+  describe("lastOperation logic", () => {
+    it("should initialize with null lastOperation", () => {
+      const { result } = renderHook(() => useCalculator());
+      expect(result.current.lastOperation).toBe(null);
+    });
+
+    it("should update lastOperation only when equals is pressed", async () => {
+      const { result } = renderHook(() => useCalculator());
+
+      act(() => {
+        // Build expression: 5 + 3
+        result.current.handleButtonClick({
+          target: { dataset: { value: "5" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "+" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "3" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+      });
+
+      // lastOperation should still be null before equals
+      expect(result.current.lastOperation).toBe(null);
+
+      act(() => {
+        // Press equals
+        result.current.handleButtonClick({
+          target: { dataset: { value: "=" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+      });
+
+      // Wait for lastOperation to be updated
+      await waitFor(() => {
+        expect(result.current.lastOperation).toBe("5+3");
+      });
+    });
+
+    it("should reset lastOperation when any button other than equals is pressed", async () => {
+      const { result } = renderHook(() => useCalculator());
+
+      act(() => {
+        // Build and calculate: 5 + 3 = 8
+        result.current.handleButtonClick({
+          target: { dataset: { value: "5" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "+" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "3" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "=" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+      });
+
+      // Wait for lastOperation to be set
+      await waitFor(() => {
+        expect(result.current.lastOperation).toBe("5+3");
+      });
+
+      act(() => {
+        // Press any other button (number)
+        result.current.handleButtonClick({
+          target: { dataset: { value: "2" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+      });
+
+      // lastOperation should be reset
+      expect(result.current.lastOperation).toBe(null);
+    });
+
+    it("should reset lastOperation when operator is pressed after equals", async () => {
+      const { result } = renderHook(() => useCalculator());
+
+      act(() => {
+        // Build and calculate: 5 + 3 = 8
+        result.current.handleButtonClick({
+          target: { dataset: { value: "5" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "+" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "3" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "=" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+      });
+
+      // Wait for lastOperation to be set
+      await waitFor(() => {
+        expect(result.current.lastOperation).toBe("5+3");
+      });
+
+      act(() => {
+        // Press operator
+        result.current.handleButtonClick({
+          target: { dataset: { value: "+" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+      });
+
+      // lastOperation should be reset
+      expect(result.current.lastOperation).toBe(null);
+    });
+
+    it("should reset lastOperation when clear (AC) is pressed", async () => {
+      const { result } = renderHook(() => useCalculator());
+
+      act(() => {
+        // Build and calculate: 5 + 3 = 8
+        result.current.handleButtonClick({
+          target: { dataset: { value: "5" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "+" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "3" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "=" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+      });
+
+      // Wait for lastOperation to be set
+      await waitFor(() => {
+        expect(result.current.lastOperation).toBe("5+3");
+      });
+
+      act(() => {
+        // Press AC
+        result.current.handleButtonClick({
+          target: { dataset: { value: "AC" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+      });
+
+      // lastOperation should be reset
+      expect(result.current.lastOperation).toBe(null);
+    });
+
+    it("should handle complex expression in lastOperation", async () => {
+      const { result } = renderHook(() => useCalculator());
+
+      act(() => {
+        // Build complex expression: 5 + 3 × 2
+        result.current.handleButtonClick({
+          target: { dataset: { value: "5" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "+" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "3" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "×" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "2" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "=" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+      });
+
+      // Wait for lastOperation to show the full expression
+      await waitFor(() => {
+        expect(result.current.lastOperation).toBe("5+3×2");
+      });
+    });
+
+    it("should handle negative numbers in lastOperation", async () => {
+      const { result } = renderHook(() => useCalculator());
+
+      act(() => {
+        // Build expression with negative number: 5 + (-3)
+        result.current.handleButtonClick({
+          target: { dataset: { value: "5" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "+" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "3" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "±" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+        result.current.handleButtonClick({
+          target: { dataset: { value: "=" } },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+      });
+
+      // Wait for lastOperation to show the expression with parentheses
+      await waitFor(() => {
+        expect(result.current.lastOperation).toBe("5+(-3)");
+      });
+    });
   });
 });
