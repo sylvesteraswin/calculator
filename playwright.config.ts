@@ -35,8 +35,6 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
   },
-  // Performance testing configuration
-  globalSetup: "./tests/e2e/global-setup.ts",
   // Visual testing
   expect: {
     toHaveScreenshot: {

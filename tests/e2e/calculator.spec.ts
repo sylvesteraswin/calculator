@@ -156,51 +156,104 @@ test("should handle delete operation", async ({ page }) => {
 });
 
 test("should measure Core Web Vitals", async ({ page }) => {
-  await page.goto("/");
-  await page.waitForLoadState("networkidle");
-
-  // Wait a bit for performance metrics to be available
-  await page.waitForTimeout(2000);
-
-  // Measure performance metrics
-  const metrics = await page.evaluate(() => {
-    return new Promise(resolve => {
+  // Enable performance monitoring
+  await page.context().addInitScript(() => {
+    // Monitor Core Web Vitals
+    if ("PerformanceObserver" in window) {
       const observer = new PerformanceObserver(list => {
-        const entries = list.getEntries();
-        const metrics: Record<string, number> = {};
-
-        entries.forEach(entry => {
+        for (const entry of list.getEntries()) {
           if (entry.entryType === "largest-contentful-paint") {
-            metrics.lcp = entry.startTime;
+            console.log("LCP:", entry.startTime);
           }
           if (entry.entryType === "first-input") {
-            const firstInput = entry as PerformanceEventTiming;
-            metrics.fid = firstInput.processingStart - firstInput.startTime;
+            const firstInputEntry = entry as PerformanceEventTiming;
+            console.log(
+              "FID:",
+              firstInputEntry.processingStart - firstInputEntry.startTime
+            );
           }
           if (entry.entryType === "layout-shift") {
             const layoutShift = entry as unknown as { value: number };
-            metrics.cls = layoutShift.value;
+            console.log("CLS:", layoutShift.value);
           }
-        });
-
-        resolve(metrics);
+        }
       });
-
       observer.observe({
         entryTypes: ["largest-contentful-paint", "first-input", "layout-shift"],
       });
+    }
+  });
 
-      // Timeout after 3 seconds
-      setTimeout(() => resolve({}), 3000);
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+
+  // Wait for the page to be fully loaded
+  await page.waitForTimeout(1000);
+
+  // Trigger a user interaction to measure FID
+  await page.click('[data-value="1"]');
+
+  // Wait for performance metrics to be collected
+  await page.waitForTimeout(2000);
+
+  // Get performance metrics using Playwright's built-in methods
+  const lcp = await page.evaluate(() => {
+    return new Promise(resolve => {
+      const observer = new PerformanceObserver(list => {
+        const entries = list.getEntries();
+        const lcpEntry = entries.find(
+          entry => entry.entryType === "largest-contentful-paint"
+        );
+        if (lcpEntry) {
+          resolve(lcpEntry.startTime);
+        }
+      });
+      observer.observe({ entryTypes: ["largest-contentful-paint"] });
+      setTimeout(() => resolve(null), 3000);
     });
   });
+
+  const fid = await page.evaluate(() => {
+    return new Promise(resolve => {
+      const observer = new PerformanceObserver(list => {
+        const entries = list.getEntries();
+        const fidEntry = entries.find(
+          entry => entry.entryType === "first-input"
+        );
+        if (fidEntry) {
+          const firstInput = fidEntry as PerformanceEventTiming;
+          resolve(firstInput.processingStart - firstInput.startTime);
+        }
+      });
+      observer.observe({ entryTypes: ["first-input"] });
+      setTimeout(() => resolve(null), 3000);
+    });
+  });
+
+  const cls = await page.evaluate(() => {
+    return new Promise(resolve => {
+      let clsValue = 0;
+      const observer = new PerformanceObserver(list => {
+        for (const entry of list.getEntries()) {
+          if (entry.entryType === "layout-shift") {
+            const layoutShift = entry as unknown as { value: number };
+            clsValue += layoutShift.value;
+          }
+        }
+      });
+      observer.observe({ entryTypes: ["layout-shift"] });
+      setTimeout(() => resolve(clsValue), 3000);
+    });
+  });
+
+  const metrics = { lcp, fid, cls };
 
   // Log metrics for CI
   console.log("Core Web Vitals:", metrics);
 
   // Assert performance thresholds (adjust as needed)
-  const typedMetrics = metrics as { lcp?: number; fid?: number; cls?: number };
-  if (typedMetrics.lcp) expect(typedMetrics.lcp).toBeLessThan(2500); // LCP should be under 2.5s
-  if (typedMetrics.fid) expect(typedMetrics.fid).toBeLessThan(100); // FID should be under 100ms
-  if (typedMetrics.cls) expect(typedMetrics.cls).toBeLessThan(0.1); // CLS should be under 0.1
+  // Note: LCP and FID might be null in test environment, which is normal
+  if (lcp) expect(lcp).toBeLessThan(2500); // LCP should be under 2.5s
+  if (fid) expect(fid).toBeLessThan(100); // FID should be under 100ms
+  expect(cls).toBeLessThan(0.1); // CLS should be under 0.1 (always check this)
 });
