@@ -114,13 +114,12 @@ export const Button = memo<Props>(
     );
   },
   (prevProps, nextProps) => {
-    // Custom comparison for better performance
+    // Custom comparison - exclude onClick from comparison
     return (
       prevProps.value === nextProps.value &&
       prevProps.styleType === nextProps.styleType &&
       prevProps.span === nextProps.span &&
-      prevProps.size === nextProps.size &&
-      prevProps.onClick === nextProps.onClick
+      prevProps.size === nextProps.size
     );
   }
 );

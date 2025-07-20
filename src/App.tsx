@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { FluentProvider, webLightTheme } from "@fluentui/react-components";
 import { customTokens } from "./lib/custom-tokens";
 
@@ -22,15 +23,20 @@ function App() {
   const { handleButtonClick, displayValue, value, lastOperation } =
     useCalculator();
 
-  // Enable keyboard navigation
-  useKeyboardNavigation({
-    onButtonClick: value => {
+  // Enable keyboard navigation with stable callback
+  const keyboardHandler = useCallback(
+    (value: string) => {
       // Simulate button click for keyboard input
       const event = {
         target: { dataset: { value } },
       } as unknown as React.MouseEvent<HTMLButtonElement>;
       handleButtonClick(event);
     },
+    [handleButtonClick]
+  );
+
+  useKeyboardNavigation({
+    onButtonClick: keyboardHandler,
   });
 
   return (
