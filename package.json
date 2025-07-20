@@ -8,7 +8,9 @@
   },
   "scripts": {
     "dev": "vite",
+    "prebuild": "npm run lint && npm run test",
     "build": "tsc -b && vite build",
+    "build:safe": "tsc -b && vite build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
@@ -16,7 +18,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "analyze": "npm run build && open dist/stats.html",
+    "test:coverage": "vitest run --coverage",
+    "analyze": "npm run build:safe && open dist/stats.html",
     "prepare": "husky"
   },
   "lint-staged": {
