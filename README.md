@@ -274,27 +274,37 @@ npm run test:e2e:report # View test reports
 - **Performance Metrics**: Core Web Vitals tracking
 - **Keyboard Testing**: Full keyboard navigation support
 - **Error Scenarios**: Division by zero, overflow handling
-- **CI/CD Integration**: Non-blocking deployment testing
-
-#### **Build Integration**
-
-```bash
-npm run build  # Runs postbuild E2E tests automatically
-```
-
-**Deployment Flow:**
-
-```
-Code Push → Build → Deploy → E2E Tests → Report Issues
-```
+- **GitHub Actions Integration**: Automated testing on main branch and PRs
 
 #### **CI/CD Pipeline**
 
-- **Vercel Postbuild**: Automated E2E testing after deployment
+- **GitHub Actions**: Automated E2E testing on push to main and PRs
 - **Test Reports**: HTML reports with screenshots and videos
 - **Performance Monitoring**: Core Web Vitals tracking
-- **Non-blocking**: E2E failures don't prevent deployment
-- **Real Environment**: Tests against actual deployed application
+- **Artifact Upload**: Test results and screenshots preserved
+- **Ubuntu Environment**: Consistent testing environment
+
+#### **GitHub Actions Workflow**
+
+The E2E tests run automatically on:
+
+- **Push to main branch**: Full E2E test suite
+- **Pull Requests**: E2E tests to prevent regressions
+
+**Workflow Steps:**
+
+1. **Setup**: Node.js 20 and dependencies
+2. **Build**: Application build and optimization
+3. **Preview Server**: Start local preview server
+4. **E2E Tests**: Run Playwright tests with performance monitoring
+5. **Artifacts**: Upload test reports and screenshots
+
+**Test Environment:**
+
+- **OS**: Ubuntu Latest
+- **Browser**: Chromium with optimized flags
+- **Performance**: Core Web Vitals monitoring enabled
+- **Visual Testing**: Screenshot regression testing
 
 ## 🚀 Performance Metrics
 

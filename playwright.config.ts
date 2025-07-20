@@ -56,12 +56,8 @@ export default defineConfig({
       },
     },
   ],
-  webServer: {
-    command: "npm run preview",
-    url: "http://localhost:4173",
-    reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000,
-  },
+  // Note: webServer is disabled for GitHub Actions
+  // The server will be started manually in the workflow
   // Visual testing
   expect: {
     toHaveScreenshot: {
