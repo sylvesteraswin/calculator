@@ -40,6 +40,58 @@ describe("useCalculator", () => {
     expect(result.current.displayValue).toBe("5.");
   });
 
+  it("should handle decimal input after operator", () => {
+    const { result } = renderHook(() => useCalculator());
+
+    act(() => {
+      result.current.handleButtonClick({
+        target: { dataset: { value: "5" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "+" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "." } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+    });
+
+    expect(result.current.displayValue).toBe("5+0.");
+    expect(result.current.value).toEqual(["", "5", "+", "0."]);
+  });
+
+  it("should handle decimal input after multiple operators", () => {
+    const { result } = renderHook(() => useCalculator());
+
+    act(() => {
+      result.current.handleButtonClick({
+        target: { dataset: { value: "5" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "+" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "3" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "×" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "." } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+    });
+
+    expect(result.current.displayValue).toBe("5+3×0.");
+    expect(result.current.value).toEqual(["", "5", "+", "3", "×", "0."]);
+  });
+
   it("should handle operator input", () => {
     const { result } = renderHook(() => useCalculator());
 

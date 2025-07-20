@@ -57,9 +57,14 @@ describe("Decimal Input Operation", () => {
       expect(result).toEqual(["5", "+", "0."]);
     });
 
-    it("should not add decimal if last value is operator", () => {
+    it("should add 0. after operator", () => {
       const result = handleDecimalInput(["5", "+"]);
-      expect(result).toEqual(["5", "+"]);
+      expect(result).toEqual(["5", "+", "0."]);
+    });
+
+    it("should add 0. after multiple operators", () => {
+      const result = handleDecimalInput(["5", "+", "3", "×"]);
+      expect(result).toEqual(["5", "+", "3", "×", "0."]);
     });
   });
 
