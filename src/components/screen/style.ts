@@ -20,6 +20,7 @@ export const useStyles = makeStyles({
     lineHeight: tokens.lineHeightBase600,
     fontWeight: tokens.fontWeightRegular,
     textShadow: "var(--textShadow)",
+    whiteSpace: "nowrap",
   },
   screenLastOperation: {
     display: "flex",
