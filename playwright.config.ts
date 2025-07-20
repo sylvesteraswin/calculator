@@ -62,6 +62,8 @@ export default defineConfig({
   expect: {
     toHaveScreenshot: {
       threshold: 0.2,
+      // Use consistent naming across platforms
+      pathTemplate: "tests/e2e/screenshots/{arg}{ext}",
     },
   },
 });
