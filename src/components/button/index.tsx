@@ -6,6 +6,7 @@ import {
 } from "@fluentui/react-components";
 import { useStyles } from "./style";
 import type { ButtonConfig } from "../../lib/button-config";
+import { CALCULATOR_BUTTONS } from "../../lib/constants";
 
 interface Props extends ButtonConfig {
   onClick: MouseEventHandler<HTMLButtonElement>;
@@ -18,25 +19,25 @@ export const Button = memo<Props>(
     // Generate accessible labels based on button value
     const getAccessibleLabel = (buttonValue: string): string => {
       switch (buttonValue) {
-        case "AC":
+        case CALCULATOR_BUTTONS.CLEAR:
           return "All Clear - Clear all calculations and reset calculator";
-        case "±":
+        case CALCULATOR_BUTTONS.INVERTED:
           return "Plus Minus - Toggle between positive and negative";
-        case "%":
+        case CALCULATOR_BUTTONS.PERCENTAGE:
           return "Percentage - Convert number to percentage";
-        case "÷":
+        case CALCULATOR_BUTTONS.DIVIDE:
           return "Divide - Division operator";
-        case "×":
+        case CALCULATOR_BUTTONS.MULTIPLY:
           return "Multiply - Multiplication operator";
-        case "-":
+        case CALCULATOR_BUTTONS.SUBTRACT:
           return "Minus - Subtraction operator";
-        case "+":
+        case CALCULATOR_BUTTONS.ADD:
           return "Plus - Addition operator";
-        case "=":
+        case CALCULATOR_BUTTONS.EQUALS:
           return "Equals - Calculate result";
-        case ".":
+        case CALCULATOR_BUTTONS.DECIMAL:
           return "Decimal Point - Add decimal to number";
-        case "DEL":
+        case CALCULATOR_BUTTONS.DELETE:
           return "Delete - Remove last character or operation";
         default:
           // For numbers 0-9
@@ -50,21 +51,21 @@ export const Button = memo<Props>(
     // Generate keyboard shortcuts for common operations
     const getKeyboardShortcut = (buttonValue: string): string => {
       switch (buttonValue) {
-        case "AC":
+        case CALCULATOR_BUTTONS.CLEAR:
           return "Escape key";
-        case "=":
+        case CALCULATOR_BUTTONS.EQUALS:
           return "Enter key";
-        case "÷":
+        case CALCULATOR_BUTTONS.DIVIDE:
           return "/ key";
-        case "×":
+        case CALCULATOR_BUTTONS.MULTIPLY:
           return "* key";
-        case "-":
+        case CALCULATOR_BUTTONS.SUBTRACT:
           return "- key";
-        case "+":
+        case CALCULATOR_BUTTONS.ADD:
           return "+ key";
-        case ".":
+        case CALCULATOR_BUTTONS.DECIMAL:
           return ". key";
-        case "DEL":
+        case CALCULATOR_BUTTONS.DELETE:
           return "Backspace key";
         default:
           if (/^[0-9]$/.test(buttonValue)) {
@@ -76,7 +77,7 @@ export const Button = memo<Props>(
 
     // Determine button type for semantic meaning
     const getButtonType = (buttonValue: string): "button" | "submit" => {
-      return buttonValue === "=" ? "submit" : "button";
+      return buttonValue === CALCULATOR_BUTTONS.EQUALS ? "submit" : "button";
     };
 
     const accessibleLabel = getAccessibleLabel(value);

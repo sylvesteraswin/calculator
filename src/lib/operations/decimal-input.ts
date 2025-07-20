@@ -30,7 +30,7 @@
  * handleDecimalInput(["5", "+", "3"]) // Returns ["5", "+", "3."]
  * ```
  */
-import { isOperator } from "../constants";
+import { isOperator, CALCULATOR_BUTTONS } from "../constants";
 
 export function handleDecimalInput(currentValue: string[]): string[] {
   const lastIndex = currentValue.length - 1;
@@ -42,12 +42,13 @@ export function handleDecimalInput(currentValue: string[]): string[] {
   }
 
   // Prevent multiple decimal points in the same number
-  if (lastValue.includes(".")) {
+  if (lastValue.includes(CALCULATOR_BUTTONS.DECIMAL)) {
     return currentValue;
   }
 
   const newArray = [...currentValue];
-  const newLastValue = lastValue === "" ? "0." : `${lastValue}.`;
+  const newLastValue =
+    lastValue === "" ? "0." : `${lastValue}${CALCULATOR_BUTTONS.DECIMAL}`;
   newArray[lastIndex] = newLastValue;
 
   return newArray;

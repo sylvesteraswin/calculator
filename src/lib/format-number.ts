@@ -1,3 +1,5 @@
+import { CALCULATOR_BUTTONS } from "./constants";
+
 /**
  * Formats a number for display, using scientific notation for very large numbers
  * @param value - The number or string to format
@@ -58,7 +60,13 @@ export const formatExpressionForDisplay = (
   return parts
     .map(part => {
       // Skip operators
-      if (["+", "-", "×", "÷"].includes(part)) {
+      const operators = [
+        CALCULATOR_BUTTONS.ADD,
+        CALCULATOR_BUTTONS.SUBTRACT,
+        CALCULATOR_BUTTONS.MULTIPLY,
+        CALCULATOR_BUTTONS.DIVIDE,
+      ];
+      if (operators.includes(part as (typeof operators)[number])) {
         return part;
       }
 

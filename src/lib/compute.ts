@@ -1,4 +1,5 @@
 import { validateNumber, logError } from "./error-handling";
+import { CALCULATOR_BUTTONS } from "./constants";
 
 export const compute = (stack: string[]) => {
   // Compute Function Logic Overview:
@@ -35,8 +36,10 @@ export const compute = (stack: string[]) => {
     }
 
     // Handle percentages AFTER parentheses
-    if (processedStack[i].includes("%")) {
-      const numValue = Number(processedStack[i].replace("%", ""));
+    if (processedStack[i].includes(CALCULATOR_BUTTONS.PERCENTAGE)) {
+      const numValue = Number(
+        processedStack[i].replace(CALCULATOR_BUTTONS.PERCENTAGE, "")
+      );
       if (!isNaN(numValue)) {
         processedStack[i] = (numValue / 100).toString();
       }
@@ -52,11 +55,17 @@ export const compute = (stack: string[]) => {
   for (let i = 0; i < processedStack.length; i++) {
     const currentChar = processedStack[i];
 
-    if (currentChar === "+" || currentChar === "-") {
+    if (
+      currentChar === CALCULATOR_BUTTONS.ADD ||
+      currentChar === CALCULATOR_BUTTONS.SUBTRACT
+    ) {
       continue; // Skip addition/subtraction for now
     }
 
-    if (currentChar === "×" || currentChar === "÷") {
+    if (
+      currentChar === CALCULATOR_BUTTONS.MULTIPLY ||
+      currentChar === CALCULATOR_BUTTONS.DIVIDE
+    ) {
       // Bounds checking
       if (i === 0 || i === processedStack.length - 1) {
         continue; // Skip if operator is at start or end
@@ -71,7 +80,7 @@ export const compute = (stack: string[]) => {
       }
 
       let tempSum = 0;
-      if (currentChar == "÷") {
+      if (currentChar == CALCULATOR_BUTTONS.DIVIDE) {
         // Handle division by zero
         if (nextNum === 0) {
           if (prevNum === 0) {
@@ -93,7 +102,7 @@ export const compute = (stack: string[]) => {
         tempSum = prevNum / nextNum;
       }
 
-      if (currentChar == "×") {
+      if (currentChar == CALCULATOR_BUTTONS.MULTIPLY) {
         tempSum = prevNum * nextNum;
       }
 
@@ -120,12 +129,15 @@ export const compute = (stack: string[]) => {
   // - Skips invalid numbers and empty values
   // - Accumulates result from left to right
   let result = 0;
-  let currentOperator = "+";
+  let currentOperator: string = CALCULATOR_BUTTONS.ADD;
 
   for (let i = 0; i < processedStack.length; i++) {
     const currentChar = processedStack[i];
 
-    if (currentChar === "+" || currentChar === "-") {
+    if (
+      currentChar === CALCULATOR_BUTTONS.ADD ||
+      currentChar === CALCULATOR_BUTTONS.SUBTRACT
+    ) {
       currentOperator = currentChar;
       continue;
     }
@@ -140,9 +152,9 @@ export const compute = (stack: string[]) => {
     }
 
     // Handle overflow/underflow in addition/subtraction
-    if (currentOperator === "+") {
+    if (currentOperator === CALCULATOR_BUTTONS.ADD) {
       result += num;
-    } else if (currentOperator === "-") {
+    } else if (currentOperator === CALCULATOR_BUTTONS.SUBTRACT) {
       result -= num;
     }
 

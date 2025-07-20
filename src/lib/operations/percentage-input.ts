@@ -1,4 +1,4 @@
-import { isOperator } from "../constants";
+import { isOperator, CALCULATOR_BUTTONS } from "../constants";
 
 /**
  * Percentage Input Operation
@@ -41,7 +41,7 @@ export function handlePercentageInput(currentValue: string[]): string[] {
   }
 
   const newArray = [...currentValue];
-  newArray[lastIndex] = `${lastValue}%`;
+  newArray[lastIndex] = `${lastValue}${CALCULATOR_BUTTONS.PERCENTAGE}`;
 
   return newArray;
 }
