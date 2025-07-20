@@ -3,9 +3,17 @@ import react from "@vitejs/plugin-react";
 import { visualizer } from "rollup-plugin-visualizer";
 import { VitePWA } from "vite-plugin-pwa";
 
+const ReactCompilerConfig = {
+  target: "18", // Target React 18
+};
+
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      babel: {
+        plugins: [["babel-plugin-react-compiler", ReactCompilerConfig]],
+      },
+    }),
     VitePWA({
       registerType: "autoUpdate",
       workbox: {
