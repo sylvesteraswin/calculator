@@ -389,6 +389,33 @@ describe("useCalculator", () => {
     expect(result.current.value).toEqual(["", "5", "+"]);
   });
 
+  it("should handle negative percentage calculation", () => {
+    const { result } = renderHook(() => useCalculator());
+
+    act(() => {
+      // Input: 2, make it negative, add percentage, calculate
+      result.current.handleButtonClick({
+        target: { dataset: { value: "2" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "±" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "%" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      result.current.handleButtonClick({
+        target: { dataset: { value: "=" } },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+    });
+
+    // Should calculate (-2)% = -0.02
+    expect(result.current.displayValue).toBe("-0.02");
+  });
+
   describe("lastOperation logic", () => {
     it("should initialize with null lastOperation", () => {
       const { result } = renderHook(() => useCalculator());

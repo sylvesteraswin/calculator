@@ -38,6 +38,14 @@ describe("compute", () => {
     expect(compute(["(-5)", "+", "3"])).toBe(-2);
   });
 
+  it("should handle negative percentages", () => {
+    expect(compute(["(-2)%"])).toBe(-0.02);
+  });
+
+  it("should handle negative percentages in expressions", () => {
+    expect(compute(["5", "+", "(-10)%"])).toBe(4.9);
+  });
+
   it("should handle empty input", () => {
     expect(compute([])).toBe(0);
   });

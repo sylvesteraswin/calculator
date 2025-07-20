@@ -15,26 +15,30 @@ export const compute = (stack: string[]) => {
   }
 
   // Preprocessing Phase:
+  // - Converts parentheses to negative numbers first ((-5) → -5)
   // - Converts percentages to decimal equivalents (50% → 0.5)
-  // - Converts parentheses to negative numbers ((-5) → -5)
   // - Handles malformed input gracefully
   const processedStack = [...stack];
   for (let i = 0; i < processedStack.length; i++) {
     const currentValue = processedStack[i];
 
-    // Handle percentages
-    if (currentValue.includes("%")) {
-      const numValue = Number(currentValue.replace("%", ""));
+    // Handle parentheses (negative numbers) FIRST
+    if (currentValue.startsWith("(-") && currentValue.includes(")")) {
+      // Find the closing parenthesis position
+      const closingParenIndex = currentValue.indexOf(")");
+      const numValue = Number(currentValue.slice(2, closingParenIndex));
       if (!isNaN(numValue)) {
-        processedStack[i] = (numValue / 100).toString();
+        // Remove the parentheses part and keep the rest
+        const rest = currentValue.slice(closingParenIndex + 1);
+        processedStack[i] = (-numValue).toString() + rest;
       }
     }
 
-    // Handle parentheses (negative numbers)
-    if (currentValue.startsWith("(-") && currentValue.endsWith(")")) {
-      const numValue = Number(currentValue.slice(2, -1));
+    // Handle percentages AFTER parentheses
+    if (processedStack[i].includes("%")) {
+      const numValue = Number(processedStack[i].replace("%", ""));
       if (!isNaN(numValue)) {
-        processedStack[i] = (-numValue).toString();
+        processedStack[i] = (numValue / 100).toString();
       }
     }
   }
