@@ -2,6 +2,13 @@ import { test, expect } from "@playwright/test";
 
 test("should display initial calculator UI", async ({ page }) => {
   await page.goto("/");
+
+  // Wait for the loading screen to disappear
+  await page.waitForSelector(
+    '[role="dialog"][aria-label="Loading calculator"]',
+    { state: "hidden" }
+  );
+
   // Wait for the calculator to load
   await page.waitForSelector("[data-value]");
 
@@ -16,6 +23,13 @@ test("should display initial calculator UI", async ({ page }) => {
 
 test("should perform basic addition", async ({ page }) => {
   await page.goto("/");
+
+  // Wait for the loading screen to disappear
+  await page.waitForSelector(
+    '[role="dialog"][aria-label="Loading calculator"]',
+    { state: "hidden" }
+  );
+
   await page.waitForSelector("[data-value]");
 
   // Click 5 + 3 = 8
@@ -185,6 +199,13 @@ test("should measure Core Web Vitals", async ({ page }) => {
   });
 
   await page.goto("/");
+
+  // Wait for the loading screen to disappear
+  await page.waitForSelector(
+    '[role="dialog"][aria-label="Loading calculator"]',
+    { state: "hidden" }
+  );
+
   await page.waitForLoadState("networkidle");
 
   // Wait for the page to be fully loaded
