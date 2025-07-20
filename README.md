@@ -1,4 +1,4 @@
-# 🧮 Advanced Calculator
+# 🧮 Simple Calculator
 
 ![Calculator UI screenshot](./public/calculator.png)
 
@@ -8,7 +8,7 @@ A modern, accessible calculator built with React, TypeScript, and Fluent UI. Fea
 
 ### **Core Architecture**
 
-- **React 18** with TypeScript for type safety and maintainability
+- **React 19** with TypeScript for type safety and maintainability
 - **Functional Components** with hooks for state management
 - **Modular Design** with clear separation of concerns
 - **Fluent UI** for consistent, accessible components
@@ -19,21 +19,15 @@ A modern, accessible calculator built with React, TypeScript, and Fluent UI. Fea
 #### **1. Error Handling & Resilience**
 
 ```typescript
-// Comprehensive error categorization
-export const CalculatorError = {
-  DIVISION_BY_ZERO: "DIVISION_BY_ZERO",
-  ZERO_DIVIDED_BY_ZERO: "ZERO_DIVIDED_BY_ZERO",
-  OVERFLOW: "OVERFLOW",
-  UNDERFLOW: "UNDERFLOW",
-  INVALID_EXPRESSION: "INVALID_EXPRESSION",
-  // ... more error types
-};
+// Comprehensive error handling with type safety
+export function validateNumber(value: number): ErrorResult {
+  // Validates overflow, underflow, and edge cases
+}
 ```
 
 - **Graceful Degradation**: Calculator continues working even with errors
 - **Error Logging**: All errors logged with context for monitoring
-- **User-Friendly Messages**: Clear, actionable error messages
-- **Input Validation**: Length limits and number validation
+- **Input Validation**: Number validation and overflow detection
 
 #### **2. Accessibility-First Design**
 
@@ -79,7 +73,7 @@ export function validateNumber(value: number): ErrorResult {
 #### **Comprehensive Testing**
 
 ```typescript
-// 107 tests covering all scenarios
+// Tests covering all scenarios
 describe("compute", () => {
   // Error handling tests
   // Overflow/Underflow tests
@@ -120,7 +114,7 @@ npm run build
 npm run dev          # Start development server
 npm run build        # Build for production
 npm run preview      # Preview production build
-npm test             # Run all tests (107 tests)
+npm test             # Run all tests
 npm run test:watch   # Run tests in watch mode
 npm run lint         # Run ESLint
 ```
@@ -171,7 +165,7 @@ npm run lint         # Run ESLint
 
 #### **Testing**
 
-- **Comprehensive Test Suite**: 107 tests covering all scenarios
+- **Comprehensive Test Suite**: All tests covering all scenarios
 - **Error Scenario Testing**: Tests for all error conditions
 - **Accessibility Testing**: Tests for keyboard navigation and ARIA
 - **Unit Testing**: Vitest with React Testing Library
@@ -216,7 +210,7 @@ export const useKeyboardNavigation = () => {
 
 ### **Test Coverage**
 
-- **Unit Tests**: 107 tests covering all calculator logic
+- **Unit Tests**: Tests covering all calculator logic
 - **Error Scenarios**: Comprehensive error condition testing
 - **Accessibility Tests**: Keyboard navigation and ARIA testing
 - **Component Tests**: React component testing with Testing Library
@@ -246,7 +240,7 @@ describe("useCalculator", () => {
 
 - **Bundle Size**: Optimized with tree shaking and code splitting (~2-5 kB reduction from lazy loading)
 - **Build Time**: Fast builds with Vite
-- **Test Execution**: 107 tests run in ~1.1 seconds
+- **Test Execution**: Tests run in ~1.1 seconds
 - **Type Checking**: Full TypeScript compilation
 - **Initial Load**: Faster initial page load with progressive component loading
 
@@ -289,7 +283,7 @@ describe("useCalculator", () => {
 
 - **ESLint**: Strict linting rules
 - **Prettier**: Consistent code formatting
-- **Testing**: 107 tests must pass
+- **Testing**: All tests must pass
 - **Type Checking**: Full TypeScript compilation
 
 ---
